@@ -127,6 +127,7 @@ BPlusTree::DelRet BPlusTree::deleteRec(Node* node, int key) {
             return { false, false };
         node->keys.erase(node->keys.begin() + i);
         node->rids.erase(node->rids.begin() + i);
+
         return { true, (int)node->keys.size() < minKeys_ };
     }
 
@@ -157,6 +158,7 @@ void BPlusTree::fixUnderflow(Node* parent, int idx) {
         else             borrowInternalFromNext(parent, idx);
         return;
     }
+
     if (lsib) {
         if (child->leaf) mergeLeaves(parent, idx - 1);
         else             mergeInternals(parent, idx - 1);
@@ -286,6 +288,7 @@ double BPlusTree::utilization() const {
     long nodes = nodeCount();
     if (nodes == 0) return 0.0;
     long slotsUsed = 0;
+
     std::vector<Node*> stack{ root_ };
     while (!stack.empty()) {
         Node* n = stack.back(); stack.pop_back();

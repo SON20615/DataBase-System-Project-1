@@ -31,6 +31,9 @@ public:
     long   mergeCount()    const { return merges_; }
     long   redistCount()   const { return redists_; }
 
+    long   twoToThreeSplitCount() const { return splitT3_; }
+    long   simpleSplitCount()     const { return splitSimple_; }
+
 private:
     struct Node {
         bool                 leaf;
@@ -44,9 +47,11 @@ private:
     int   maxKeys_;
     int   minKeys_;
 
-    mutable long splits_  = 0;
-    mutable long merges_  = 0;
-    mutable long redists_ = 0;
+    mutable long splits_      = 0;
+    mutable long merges_      = 0;
+    mutable long redists_     = 0;
+    mutable long splitT3_     = 0;
+    mutable long splitSimple_ = 0;
 
     static int  upperBoundIdx(const std::vector<int>& v, int k);
     static int  lowerBoundIdx(const std::vector<int>& v, int k);

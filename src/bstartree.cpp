@@ -40,6 +40,7 @@ int BStarTree::search(int key) const {
 void BStarTree::insert(int key, int rid) {
     insertRec(root_, key, rid);
     if ((int)root_->keys.size() > maxKeys_) {
+
         Node* old = root_;
         Node* newRoot = new Node{false, {}, {}, { old }};
         splitChildSimple(newRoot, 0);
@@ -77,6 +78,7 @@ void BStarTree::rebalanceChild(Node* parent, int idx) {
         redistributeWithRight(parent, idx);
         return;
     }
+
     if (lsib)      twoToThreeSplit(parent, idx - 1);
     else if (rsib) twoToThreeSplit(parent, idx);
     else           splitChildSimple(parent, idx);
@@ -202,6 +204,7 @@ void BStarTree::twoToThreeSplit(Node* parent, int leftIdx) {
     parent->ch  .insert(parent->ch  .begin() + leftIdx + 2, c);
 
     ++splits_;
+    ++splitT3_;
 }
 
 void BStarTree::splitChildSimple(Node* parent, int idx) {
@@ -223,6 +226,7 @@ void BStarTree::splitChildSimple(Node* parent, int idx) {
     parent->rids.insert(parent->rids.begin() + idx,     sepR);
     parent->ch  .insert(parent->ch  .begin() + idx + 1, right);
     ++splits_;
+    ++splitSimple_;
 }
 
 bool BStarTree::remove(int key) {

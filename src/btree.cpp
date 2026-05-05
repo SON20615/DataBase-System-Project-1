@@ -7,7 +7,7 @@
 BTree::BTree(int order) : d_(order) {
     if (order < 3) throw std::invalid_argument("B-tree order must be >= 3");
     maxKeys_ = d_ - 1;
-    minKeys_ = (d_ + 1) / 2 - 1;       // = ceil(d/2) - 1
+    minKeys_ = (d_ + 1) / 2 - 1;
     root_    = new Node{true, {}, {}, {}};
 }
 
@@ -48,7 +48,6 @@ void BTree::insert(int key, int rid) {
 BTree::Split BTree::insertRec(Node* node, int key, int rid) {
     int i = lowerBoundIdx(node->keys, key);
 
-    // duplicate key -> overwrite RID at whichever level we found it
     if (i < (int)node->keys.size() && node->keys[i] == key) {
         node->rids[i] = rid;
         return {};
@@ -71,7 +70,7 @@ BTree::Split BTree::insertRec(Node* node, int key, int rid) {
 }
 
 BTree::Split BTree::splitNode(Node* node) {
-    int mid = (int)node->keys.size() / 2;          // floor(size/2)
+    int mid = (int)node->keys.size() / 2;
 
     Node* right = new Node{ node->leaf, {}, {}, {} };
     right->keys.assign(node->keys.begin() + mid + 1, node->keys.end());
@@ -95,7 +94,6 @@ bool BTree::remove(int key) {
 
     bool ok = deleteFrom(root_, key);
 
-    // root may have been emptied by a merge; collapse a level.
     if (!root_->leaf && root_->keys.empty()) {
         Node* old = root_;
         root_ = root_->ch[0];

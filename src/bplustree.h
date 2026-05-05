@@ -35,8 +35,10 @@ private:
     struct Node {
         bool                 leaf;
         std::vector<int>     keys;
+
         std::vector<int>     rids;
         Node*                next;
+
         std::vector<Node*>   ch;
     };
 
